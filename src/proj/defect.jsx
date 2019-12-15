@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import Table1 from "./Table1";
 
 class Defect extends Component {
   state = {
-    task: { name: "", status: "" },
+    task: {
+       name: "",
+        status: "" },
     tasks: []
   };
 
@@ -30,24 +33,39 @@ class Defect extends Component {
       console.log(res);
       this.componentDidMount();
     });
+
   };
+  handleup=id=>{
+    Axios.put("http://localhost:8089/defect/" + id).then(res => {
+        console.log(res);
+        this.componentDidMount();
+      });
+  }
   render() {
     return (
       <div>
-        Name:
-        <input
-          type="text"
-          name="name"
-          value={this.state.task.name}
-          onChange={this.handleChange}
-        />
-        Status:
-        <input
-          type="text"
-          name="status"
-          value={this.state.task.status}
-          onChange={this.handleChange}
-        />
+        <form>
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="type"
+              class="form-control"
+              name="name"
+              value={this.state.task.name}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div class="form-group">
+            <label>status</label>
+            <input
+              type="type"
+              class="form-control"
+              name="status"
+              value={this.state.task.status}
+              onChange={this.handleChange}
+            />
+          </div>
+        </form>
         <div>
           <button className="btn btn-primary m-2" onClick={this.handleAd}>
             Add
@@ -56,30 +74,8 @@ class Defect extends Component {
             Delet
           </button>
         </div>
-        <table className="table table-dark">
-          <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>status</th>
-          </tr>
-          {this.state.tasks.map(t => {
-            return (
-              <tr>
-                <td>{t.id}</td>
-                <td>{t.name}</td>
-                <td>{t.status}</td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => this.handleDel(t.id)}
-                  >
-                    delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </table>
+        <Table1 tasks={this.state.tasks}/>
+      
       </div>
     );
   }
